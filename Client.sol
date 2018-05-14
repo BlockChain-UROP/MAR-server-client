@@ -3,6 +3,7 @@ pragma solidity ^0.4.21;
 contract Client {
     address public S_addr;       // The deployed address of the server S
     string public S_func;   // The target function signature of server S
+    bool public success = false; 
     
     
     // Address Storage (stores server addresses)
@@ -31,6 +32,7 @@ contract Client {
     
     // Render target that is to-be-called
     function renderServerData(string _addrByte, string _funcByte) public {
+        success = false;
         S_addr = getAddressValue(_addrByte);
         S_func = getStringValue(_funcByte);
     }
@@ -38,11 +40,15 @@ contract Client {
     
     // Execute the target modules's function
     function exec() public returns (bool) {
-        return S_addr.call.gas(30000000)(bytes4(keccak256(S_func)));
+        if(S_addr.call(bytes4(keccak256(S_func))) == true)
+            success = true;
+        else success = false;
+        
+        return success;
     }
     
     function exec_1(uint _value) public returns (bool) {
-        return S_addr.call.gas(30000000)(bytes4(keccak256(S_func)), _value);
+        return S_addr.call(bytes4(keccak256(S_func)), _value);
     }
     
     
