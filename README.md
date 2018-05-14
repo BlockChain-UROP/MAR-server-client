@@ -7,7 +7,7 @@ Client --> Server
 2. On Client:
 ```
 setAddressValue("S_addr",<server_address>)
-getStringValue("S_func","increment()")
+setStringValue("S_func","increment()")
 renderServerData("S_addr","S_func")
 exec()
 ```
