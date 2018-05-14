@@ -7,6 +7,7 @@ contract C {
     
     address public M_addr;       // The deployed address of the module M
     string public M_func;   // The target function signature of module M
+    bool public success = false; 
     
     
     // Address Storage (stores module addresses)
@@ -35,6 +36,7 @@ contract C {
     
     // Render target that is to-be-called
     function renderModule(string _addrByte, string _funcByte) public {
+        success = false;
         M_addr = getAddressValue(_addrByte);
         M_func = getStringValue(_funcByte);
     }
@@ -42,6 +44,10 @@ contract C {
     
     // Execute the target modules's function
     function exec() public returns (bool) {
-        return M_addr.call(bytes4(keccak256(M_func)));
+        if(M_addr.call(bytes4(keccak256(M_func))) == true)
+            success = true;
+        else success = false;
+        
+        return success;
     }
 }
